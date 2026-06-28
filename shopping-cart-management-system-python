@@ -1,1 +1,98 @@
+product=[
+    {"id": 1, "name": "Shoes", "price": 2500},
+    {"id": 2, "name": "Bag", "price": 1800},
+    {"id": 3, "name": "Watch", "price": 5000},
+    {"id": 4, "name": "Glasses", "price": 1200}
+]
+def display_products(products):
+    for product in products:
+        print(f"ID: {product['id']}")
+        print(f"Name: {product['name']}")
+        print(f"Price: {product['price']}")
+        print("")
+        
+def search_product(products, keyword):
+    for product in products:
+        if product["name"].lower()==keyword.lower().strip():
+            return f"Product Found\n\nID: {product['id']}\nName: {product['name']}\nPrice: {product['price']}"       
+    return "Product Not Found"
 
+
+cart=[]
+def add_to_cart(products, cart, product_id):
+    for product in products:
+        if product["id"]==product_id:
+            for item in cart:
+                if item["id"]==product_id:
+                 return "Product already in cart"
+            cart.append(product)
+            return f"{product['name']} added to cart"
+    return "Prduct Not Found"
+
+def remove_from_cart(cart, product_id):
+    for product in cart:
+        if product["id"]==product_id:
+            index1=cart.index(product)
+            cart.pop(index1)
+            return f"{product['name']} removed"
+    return "Product Not Found In Cart"
+
+
+def calculate_total(cart):
+    if len(cart)==0:
+        return "Your cart is empty"
+    else:
+        total=0
+        item=0
+        for product in cart:
+            item=item+1
+            total=total+product["price"]
+        return f"Item={item}\nTotal Bill: {total}"
+
+
+print("========================================== Shopping Cart ===================================================")
+print('''1. Display Products
+2. Search Product
+3. Add to Cart
+4. Remove from Cart
+5. View Cart
+6. Calculate Total
+7. Checkout
+8. Exit''')
+try:
+    option=int(input("Choose an option: "))
+    while(option!=8):
+        if option==1:
+            display_products(product)
+        elif option==2:
+            searchproduct=input("Enter product name to search: ")
+            info=search_product(product,searchproduct)
+            print(info)
+        elif option==3:
+            productid=int(input("Enter product id to add to cart"))
+            info=add_to_cart(product,cart,productid)
+            print(info)
+        elif option==4:
+            productid=int(input("Enter product id to add to cart"))
+            info=remove_from_cart(cart,productid)
+            print(info)
+        elif option==5:
+             for product in cart:
+              print(f"ID: {product["id"]}")
+              print(f"Name: {product["name"]}")
+              print(f"Price: {product["price"]}")
+              print("")
+             
+        elif option==6:
+            info=calculate_total(cart)
+            print(info)
+        elif option==7:
+            print("checkout plz")
+            break
+        else:
+            print("Invalid option")
+            continue
+        option=int(input("Choose next option if you want to continue"))
+except:
+    print("Option should be in form of 1,2")            
+    
