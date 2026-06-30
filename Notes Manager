@@ -1,0 +1,116 @@
+from datetime import datetime
+now=datetime.now()
+def add_note(note):
+     try:
+        with open("Notes Project.txt",'a') as file:
+         file.write(f"\n{now}: {note}")
+         return "Notes Added Successfully"
+     except FileNotFoundError:
+        return "No Notes Found"
+
+def view_notes():
+    try:
+        with open("Notes Project.txt",'r') as file:
+         content=file.read()
+         if content.strip() !="":
+          print("============== Your Notes ===================")
+          return content
+         else:
+            return "No notes available."
+    except FileNotFoundError:
+        return "No notes found"
+
+
+def search_note(keyword):
+        try:
+         with open("Notes Project.txt",'r') as file:
+          for line_no,line in enumerate(file,start=1):
+            if line.lower().__contains__(keyword):
+                print("Note Found at line ",line_no)
+                return line
+          return "No matching note found."
+        except FileNotFoundError:
+           return "No notes found."
+        
+def replace_word(old_word, new_word):
+        try:
+         with open("Notes Project.txt",'r+') as file:
+          content=file.read()
+          if old_word not in content:
+            return "Word not found"
+          else:
+            content=content.replace(old_word,new_word)
+            file.seek(0)
+            file.write(content)
+            file.truncate()
+            return "Updated"
+        except FileNotFoundError:
+         return "No Notes Found"
+
+def delete_notes():
+       try:
+        with open("Notes Project.txt",'w') as file:
+         file.write("")
+         return "All notes deleted successfully"
+       except FileNotFoundError:
+          return "No notes Found"
+
+def count_notes():
+    try:
+        with open("Notes Project.txt", "r") as file:
+            count = 0
+            for line in file:
+                count += 1
+            return count
+    except FileNotFoundError:
+        return "No Notes Found"
+          
+          
+
+
+print("==================== Notes Manager ====================")
+print('''
+1. Add Notes
+2. View Notes
+3. Search Notes
+4. Replace Word
+5. Delete All Notes
+6. Count Notes
+7. Exit ''')
+option=int(input("Choose an option: "))
+while(option!=7):
+    try:
+        if(option==1):
+            note=input("Enter your notes: ")
+            info=add_note(note)
+            print(info)
+        elif(option==2):
+            info=view_notes()
+            print(info)
+        elif(option==3):
+           keyword=input("Enter keyword to search your notes: ")
+           info=search_note(keyword.strip().lower())
+           print(info)
+        elif(option==4):
+           old_word=input("Enter old word: ")
+           new_word=input("Enter new word: ")
+           info=replace_word(old_word.lower().strip(),new_word.lower().strip())
+           print(info)
+        elif(option==5):
+           op=input("Are you sure you want to delete all notes? (yes/no): ")
+           if op.strip().lower()=="yes":
+              info=delete_notes()
+              print(info)
+           else:
+              print("Deletion cancelled")
+        elif(option==6):
+           info=count_notes()
+           print(info)
+        else:
+           print("Option shoud be between (1 to 7")
+        
+        option=int(input("If you want to continue please choose option (1 to 7) otherwise choose option 7: "))
+        if(option==7):
+         print("Thank you for using Notes Manager!")      
+    except ValueError:
+        print(ValueError)
