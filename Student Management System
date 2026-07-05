@@ -1,0 +1,219 @@
+import time
+import colorama
+def main_menu():
+    print(f'''{colorama.Fore.WHITE}
+===================================================================================================
+=                                   {colorama.Style.BRIGHT}{colorama.Fore.YELLOW}Student Management System {colorama.Fore.BLACK}{colorama.Fore.WHITE}                                    =
+{colorama.Fore.WHITE}===================================================================================================
+{colorama.Fore.GREEN}
+1. Admin
+2. Student
+3. Exit{colorama.Fore.RESET} {colorama.Style.RESET_ALL}     
+          ''')
+    try:
+       option=1
+       while(option!=3):
+        option=int(input("Enter option (1-3): "))
+        if(option==1):
+         admin_login()
+        elif(option==2):
+         student_login()
+        elif(option==3):
+         print("Thank you for using Student Management System.")
+        else:
+         print("Invalid Option")
+    except ValueError:
+       print("Option should be in numeric form (1-3)")
+
+def admin_login():
+    print("")
+    username=input("Enter your username: ")
+    password=input("Enter your password: ")
+    print("Login process started...")
+    time.sleep(3)
+    if(username.lower().strip()=="admin" and password.strip()=="7865"):
+        print("Login Successful.")
+        admin_panel()
+    else:
+        print("Invalid Username or Password.")
+
+def student_login():
+    found=False
+    print("")
+    username=input("Enter your username: ")
+    password=input("Enter your password: ")
+    print("Student login process started...")
+    for student in students:
+       if student.Username.lower().strip()==username.lower() and student.Password.strip()==password:
+          found=True
+          time.sleep(3)
+          print("Login Successful")
+          student_panel(student)
+          break
+    if not found:   
+     print("Invalid Username or Password.")
+          
+
+def admin_panel():
+    print(f'''{colorama.Fore.WHITE}
+===================================================================================================
+=                                         {colorama.Style.BRIGHT}{colorama.Fore.YELLOW}ADMIN PANEL {colorama.Fore.BLACK}{colorama.Fore.WHITE}                                             =
+{colorama.Fore.WHITE}===================================================================================================      
+{colorama.Fore.GREEN}
+1. Add Student
+2. View All Students
+3. Search Student
+4. Update Student
+5. Delete Student
+6. Logout
+7. Exit{colorama.Fore.RESET}{colorama.Style.RESET_ALL}
+       
+          ''')
+    try:
+     option=1
+     while(option!=7):
+      option=int(input("Enter option (1-7): "))
+      print(f"You selected option {option}")
+      if option == 1:
+       add_student()
+      elif option == 2:
+       view_students()
+      elif option == 3:
+       search_student()
+      elif option == 4:
+       update_student()
+      elif option == 5:
+       delete_student()
+      elif option == 6:
+       logout()
+      elif option==7:
+        main_menu()
+      else:
+         print("Invalid option")
+      continue
+    except ValueError:
+       print("Option Should be in numeric Form (1-7)")
+students=[]
+
+def add_student():
+    Name=input("Enter Student Name: ")
+    Roll_Number=input("Enter Student Roll no: ")
+    Username=input("Enter Student username for Login: ")
+    Password=input("Enter Student Password for Login: ")
+    Department=input("Enter Student Department: ")
+    CGPA=float(input("Enter Student CGPA: "))
+    student=Student(Name,Roll_Number,Username,Password,Department,CGPA)
+    students.append(student)
+    print("Student Added Successfully")
+    #admin_panel()
+    
+def view_students():
+   if len(students)==0:
+      print("There is no Student in Record Found")
+   else:
+    for student in students:
+      student.display()
+  
+    
+def search_student():
+    n=0
+    rollno=input("Enter Student Roll no to search: ")
+    for student in students:
+       if student.Roll_Number==rollno:
+          n=1
+          print("Student Found")
+          print("Here is the Student Details:")
+          student.display()
+          break
+    if n==0:
+     print("Student Not Found")
+    #admin_panel()
+       
+def update_student():
+    found=False
+    rollno=input("Enter Student Rollno Whoose information you want to change: ")
+    for student in students:
+       if student.Roll_Number==rollno:
+          found=True
+          print("Student Found\nCurrent Details:")
+          student.display()
+          student.Name=input("Enter Student Name: ")
+          student.Roll_Number=input("Enter Student Roll no: ")
+          student.Username=input("Enter Student username for Login: ")
+          student.Password=input("Enter Student Password for Login: ")
+          student.Department=input("Enter Student Department: ")
+          student.CGPA=float(input("Enter Student CGPA: "))
+          print("Student Information Successfully Updated")
+          break
+    if not found:
+     print("Student Not Found")
+    #admin_panel()
+          
+
+
+def delete_student():
+   found=False
+   rollno=input("Enter Student Roll Number to delete: ")
+   for student in students:
+       if student.Roll_Number==rollno:
+          found=True
+          print("Student Found")
+          students.remove(student)
+          print("Student Information Deleted Successfully")
+          break
+   if not found:
+     print("Student Not Found")
+   #admin_panel()
+    
+    
+def logout():
+    print("Logged out successfully.")
+    main_menu()
+    
+
+class Student:
+   def __init__(self,Name,Roll_Number,Username,Password,Department,CGPA):
+      self.Name=Name
+      self.Roll_Number=Roll_Number
+      self.Username=Username
+      self.Password=Password
+      self.Department=Department
+      self.CGPA=CGPA
+   def display(self):
+      print(f'''{colorama.Fore.BLUE}
+Name= {self.Name}
+Roll No= {self.Roll_Number}
+Username= {self.Username}
+Department= {self.Department}
+CGPA= {self.CGPA}{colorama.Fore.RESET}
+            ''')
+
+def student_panel(student):
+    print(f'''{colorama.Fore.WHITE}
+===================================================================================================
+=         {colorama.Style.BRIGHT}{colorama.Fore.YELLOW}                                STUDENT PANEL                                           =
+=                     {colorama.Fore.WHITE}                 Welcome Back {student.Name}                                =
+==================================================================================================={colorama.Fore.WHITE}     
+{colorama.Fore.GREEN}          
+1. View My Profile
+2. Logout
+3. Exit{colorama.Fore.RESET}{colorama.Style.RESET_ALL}
+          ''') 
+    try:
+       option=1
+       while(option!=3):
+          option=int(input("Enter option (1=3): "))
+          if(option==1):
+             student.display()
+             break
+          elif(option==2):
+             main_menu()
+          elif(option==3):
+             break
+          else:
+             print("Invalid Option")
+    except ValueError:
+       print("Option must be in numeric Form (1-3)")
+
+main_menu()
+            
